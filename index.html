@@ -79,21 +79,24 @@
     });
 
     formButton.addEventListener('click', ()  => {
+      formName.classList.remove("error");
+      formText.classList.remove("error");
+
       if (formName.value === "") {
         formName.classList.add("error");
         return;
-      };
+      }
 
       if (formText.value === "") {
         formText.classList.add("error");
         return;
-      };
+      }
 
     const date = new Date().toLocaleString().slice(0, -3);
 
     const oldHTML = conteinerComments.innerHTML;
 
-     const newCommentHtml = `
+    const newCommentHtml = `
         <li class="comment">
           <div class="comment-header">
             <div>${formName.value}</div>
