@@ -95,9 +95,7 @@
             <div>${comment.date}</div>
           </div>
           <div class="comment-body">
-            <div class="comment-text">
-              ${comment.text}
-            </div>
+            <div class="comment-text">${comment.text}</div>
           </div>
           <div class="comment-footer">
             <div class="likes">
@@ -141,28 +139,38 @@
     now.getHours().toString().padStart(2, '0') + ':' + 
     now.getMinutes().toString().padStart(2, '0');
 
-    const oldHTML = conteinerComments.innerHTML;
+     comments.push({
+        name: formName.value,
+        date: date,
+        text: formText.value,
+        likes: 0,
+        isLiked: false
+      });
 
-    const newCommentHtml = `
-        <li class="comment">
-          <div class="comment-header">
-            <div>${formName.value}</div>
-            <div>${date}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              ${formText.value}
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">0</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>`;
+     renderComents ();
 
-    conteinerComments.innerHTML = oldHTML + newCommentHtml;
+    // const oldHTML = conteinerComments.innerHTML;
+
+    // const newCommentHtml = `
+    //     <li class="comment">
+    //       <div class="comment-header">
+    //         <div>${formName.value}</div>
+    //         <div>${date}</div>
+    //       </div>
+    //       <div class="comment-body">
+    //         <div class="comment-text">
+    //           ${formText.value}
+    //         </div>
+    //       </div>
+    //       <div class="comment-footer">
+    //         <div class="likes">
+    //           <span class="likes-counter">0</span>
+    //           <button class="like-button"></button>
+    //         </div>
+    //       </div>
+    //     </li>`;
+
+    // conteinerComments.innerHTML = oldHTML + newCommentHtml;
 
     formName.value = "";
     formText.value = "";
