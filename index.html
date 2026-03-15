@@ -65,6 +65,8 @@
 
   <script>
     "use strict";
+
+    // СОЗДАЮ МАССИВ С ОБЪЕКТАМИ ИЗ РАЗМЕТКИ HTML
   const comments = [
       {
         name: "Глеб Фокин",
@@ -87,6 +89,7 @@
     const formButton = document.querySelector('.add-form-button');
     const conteinerComments = document.querySelector('.comments');
 
+    // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ МАССИВ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
     function renderComents () {
         const commentsHTML = comments.map((comment) => {
           return `<li class="comment">
@@ -103,19 +106,20 @@
               <button class="like-button"></button>
             </div>
           </div>
-        </li>`}).join("");
-        conteinerComments.innerHTML = commentsHTML;
+        </li>`}).join(""); /*склеиваем массив в строку */
+        
+        conteinerComments.innerHTML = commentsHTML; /*добавляем массив HTML */
     }
 
-    renderComents ();
+    renderComents (); 
 
   
-    formName.addEventListener('input', (event)  => {
-    console.log(event.target.value);
-    });
-    formText.addEventListener('input', (event)  => {
-    console.log(event.target.value);
-    });
+    // formName.addEventListener('input', (event)  => {
+    // console.log(event.target.value);
+    // });
+    // formText.addEventListener('input', (event)  => {
+    // console.log(event.target.value);
+    // });
 
     formButton.addEventListener('click', ()  => {
       formName.classList.remove("error");
