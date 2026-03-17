@@ -125,13 +125,13 @@
       const index = event.currentTarget.dataset.index;
       const comment = comments[index];
       
-      // Меняем состояние лайка
+    // Счетчик лайков туда и обратно
       if (comment.isLiked) {
-        // Если уже лайкнуто - убираем лайк
+      
         comment.likes--;
         comment.isLiked = false;
       } else {
-        // Если не лайкнуто - ставим лайк
+     
         comment.likes++;
         comment.isLiked = true;
       }
