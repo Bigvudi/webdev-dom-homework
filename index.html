@@ -56,7 +56,7 @@
     const conteinerComments = document.querySelector('.comments');
     
 
-    // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ МАССИВ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
+    // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
     function renderComents () {
         const commentsHTML = comments.map((comment, index) => {
           const likeButtonClass = comment.isLiked 
