@@ -88,10 +88,14 @@
     const formText = document.querySelector('.add-form-text');
     const formButton = document.querySelector('.add-form-button');
     const conteinerComments = document.querySelector('.comments');
+    
 
     // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ МАССИВ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
     function renderComents () {
-        const commentsHTML = comments.map((comment) => {
+        const commentsHTML = comments.map((comment, index) => {
+          const likeButtonClass = comment.isLiked 
+          ? 'like-button -active-like' 
+          : 'like-button';
           return `<li class="comment">
           <div class="comment-header">
             <div>${comment.name}</div>
@@ -103,24 +107,38 @@
           <div class="comment-footer">
             <div class="likes">
               <span class="likes-counter">${comment.likes}</span>
-              <button class="like-button"></button>
+              <button class="${likeButtonClass}" data-index="${index}"></button>
             </div>
           </div>
         </li>`}).join(""); /*склеиваем массив в строку */
         
         conteinerComments.innerHTML = commentsHTML; /*добавляем массив HTML */
+
+        const likeButtons = document.querySelectorAll('.like-button')
+        for (const button of likeButtons) {
+        button.addEventListener('click', likeHandler);
+    }
+  }
+
+   function likeHandler(event) {
+      // Получаем индекс комментария из data-атрибута
+      const index = event.currentTarget.dataset.index;
+      const comment = comments[index];
+      
+      // Меняем состояние лайка
+      if (comment.isLiked) {
+        // Если уже лайкнуто - убираем лайк
+        comment.likes--;
+        comment.isLiked = false;
+      } else {
+        // Если не лайкнуто - ставим лайк
+        comment.likes++;
+        comment.isLiked = true;
+      }
+      renderComents (); 
     }
 
-    renderComents (); 
-
   
-    // formName.addEventListener('input', (event)  => {
-    // console.log(event.target.value);
-    // });
-    // formText.addEventListener('input', (event)  => {
-    // console.log(event.target.value);
-    // });
-
     formButton.addEventListener('click', ()  => {
       formName.classList.remove("error");
       formText.classList.remove("error");
@@ -153,33 +171,12 @@
 
      renderComents ();
 
-    // const oldHTML = conteinerComments.innerHTML;
-
-    // const newCommentHtml = `
-    //     <li class="comment">
-    //       <div class="comment-header">
-    //         <div>${formName.value}</div>
-    //         <div>${date}</div>
-    //       </div>
-    //       <div class="comment-body">
-    //         <div class="comment-text">
-    //           ${formText.value}
-    //         </div>
-    //       </div>
-    //       <div class="comment-footer">
-    //         <div class="likes">
-    //           <span class="likes-counter">0</span>
-    //           <button class="like-button"></button>
-    //         </div>
-    //       </div>
-    //     </li>`;
-
-    // conteinerComments.innerHTML = oldHTML + newCommentHtml;
-
+   
     formName.value = "";
     formText.value = "";
 
     });
+     renderComents ();
    
   </script>
 </html>
