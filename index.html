@@ -9,6 +9,40 @@
   <body>
     <div class="container">
       <ul class="comments">
+        <li class="comment">
+          <div class="comment-header">
+            <div>Глеб Фокин</div>
+            <div>12.02.22 12:18</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              Это будет первый комментарий на этой странице
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">3</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>
+        <li class="comment">
+          <div class="comment-header">
+            <div>Варвара Н.</div>
+            <div>13.02.22 19:22</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              Мне нравится как оформлена эта страница! ❤
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">75</span>
+              <button class="like-button -active-like"></button>
+            </div>
+          </div>
+        </li>
       </ul>
       <div class="add-form">
         <input
@@ -31,80 +65,19 @@
 
   <script>
     "use strict";
-
-    // СОЗДАЮ МАССИВ С ОБЪЕКТАМИ ИЗ РАЗМЕТКИ HTML
-  const comments = [
-      {
-        name: "Глеб Фокин",
-        date: "12.02.22 12:18",
-        text: "Это будет первый комментарий на этой странице",
-        likes: 3,
-        isLiked: false
-      },
-      {
-        name: "Варвара Н.",
-        date: "13.02.22 19:22",
-        text: "Мне нравится как оформлена эта страница! ❤",
-        likes: 75,
-        isLiked: true
-      }
-    ];
-
     const formName = document.querySelector('.add-form-name');
     const formText = document.querySelector('.add-form-text');
     const formButton = document.querySelector('.add-form-button');
-    const conteinerComments = document.querySelector('.comments');
-    
+    const conteinerComments = document.querySelector('.comments')
 
-    // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ МАССИВ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
-    function renderComents () {
-        const commentsHTML = comments.map((comment, index) => {
-          const likeButtonClass = comment.isLiked 
-          ? 'like-button -active-like' 
-          : 'like-button';
-          return `<li class="comment">
-          <div class="comment-header">
-            <div>${comment.name}</div>
-            <div>${comment.date}</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">${comment.text}</div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">${comment.likes}</span>
-              <button class="${likeButtonClass}" data-index="${index}"></button>
-            </div>
-          </div>
-        </li>`}).join(""); /*склеиваем массив в строку */
-        
-        conteinerComments.innerHTML = commentsHTML; /*добавляем массив HTML */
 
-        const likeButtons = document.querySelectorAll('.like-button')
-        for (const button of likeButtons) {
-        button.addEventListener('click', likeHandler);
-    }
-  }
+    formName.addEventListener('input', (event)  => {
+    console.log(event.target.value);
+    });
+    formText.addEventListener('input', (event)  => {
+    console.log(event.target.value);
+    });
 
-   function likeHandler(event) {
-      // Получаем индекс комментария из data-атрибута
-      const index = event.currentTarget.dataset.index;
-      const comment = comments[index];
-      
-    // Счетчик лайков туда и обратно
-      if (comment.isLiked) {
-      
-        comment.likes--;
-        comment.isLiked = false;
-      } else {
-     
-        comment.likes++;
-        comment.isLiked = true;
-      }
-      renderComents (); 
-    }
-
-  
     formButton.addEventListener('click', ()  => {
       formName.classList.remove("error");
       formText.classList.remove("error");
@@ -127,22 +100,33 @@
     now.getHours().toString().padStart(2, '0') + ':' + 
     now.getMinutes().toString().padStart(2, '0');
 
-     comments.push({
-        name: formName.value,
-        date: date,
-        text: formText.value,
-        likes: 0,
-        isLiked: false
-      });
+    const oldHTML = conteinerComments.innerHTML;
 
-     renderComents ();
+    const newCommentHtml = `
+        <li class="comment">
+          <div class="comment-header">
+            <div>${formName.value}</div>
+            <div>${date}</div>
+          </div>
+          <div class="comment-body">
+            <div class="comment-text">
+              ${formText.value}
+            </div>
+          </div>
+          <div class="comment-footer">
+            <div class="likes">
+              <span class="likes-counter">0</span>
+              <button class="like-button"></button>
+            </div>
+          </div>
+        </li>`;
 
-   
+    conteinerComments.innerHTML = oldHTML + newCommentHtml;
+
     formName.value = "";
     formText.value = "";
 
     });
-     renderComents ();
    
   </script>
 </html>
