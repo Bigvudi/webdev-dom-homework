@@ -57,7 +57,7 @@
     
 
     // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
-    function renderComents () {
+    function renderComments () {
         const commentsHTML = comments.map((comment, index) => {
           const likeButtonClass = comment.isLiked 
           ? 'like-button -active-like' 
@@ -101,7 +101,7 @@
         comment.likes++;
         comment.isLiked = true;
       }
-      renderComents (); 
+      renderComments (); 
     }
 
   
@@ -135,14 +135,14 @@
         isLiked: false
       });
 
-     renderComents ();
+     renderComments ();
 
    
     formName.value = "";
     formText.value = "";
 
     });
-     renderComents ();
+     renderComments ();
    
   </script>
 </html>
