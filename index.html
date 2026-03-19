@@ -109,12 +109,12 @@
       formName.classList.remove("error");
       formText.classList.remove("error");
 
-      if (formName.value === "") {
-        formName.classList.add("error");
-        return;
+      if (!formName.value.trim()) { // trim обрежет пробелы и проверит, что пользователь не попытался обойти валидацию с помощью пробелов
+      formName.classList.add("error");
+      return;
       }
 
-      if (formText.value === "") {
+      if (!formText.value.trim()) {
         formText.classList.add("error");
         return;
       }
