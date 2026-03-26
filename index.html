@@ -55,7 +55,6 @@
     const formButton = document.querySelector('.add-form-button');
     const containerComments = document.querySelector('.comments');
     
-
     // СОЗДАЮ РЕНДЕР ФУНКЦИЮ И ПЕРЕБИРАЮ ВОЗВРАЩАЯ КОНТЕНТ ПО КЛЮЧАМ
     function renderComments () {
         const commentsHTML = comments.map((comment, index) => {
@@ -82,24 +81,40 @@
 
         const likeButtons = document.querySelectorAll('.like-button')
         for (const button of likeButtons) {
-        button.addEventListener('click', likeHandler);
-    }
-  }
+          button.addEventListener('click', likeHandler);
+      }
+        // ДОБАВЛЯЮ ОБРАБОТЧИКИ ДЛЯ ЦИТИРОВАНИЯ (клик по всему комментарию)
+        const commentElements = document.querySelectorAll('.comment');
+        for (const commentElement of commentElements) {
+          commentElement.addEventListener('click', () => {
+      // Находим индекс через кнопку лайка внутри этого комментария
+        const index = commentElement.querySelector('.like-button').dataset.index;
+        const comment = comments[index];
 
-    function likeHandler(event) {
-      // Получаем индекс комментария из data-атрибута
-      const index = event.currentTarget.dataset.index;
-      const comment = comments[index];
+      // Записываем данные в поле ввода (textarea)
+      // Сначала символ цитаты ">", потом текст, потом имя автора
+          formText.value = `> ${comment.text}\n\n${comment.name}, `;
+      
+      // Ставим фокус (курсор), чтобы сразу начать печатать
+      formText.focus();
+    });
+      }
+}
+        function likeHandler(event) {
+          event.stopPropagation(); // тобы не вызывала всплытие(не срабатывали все элементы)
+          // Получаем индекс комментария из data-атрибута
+        const index = event.currentTarget.dataset.index;
+        const comment = comments[index];
       
     // Счетчик лайков туда и обратно из 1 урока
-      if (comment.isLiked) {
+        if (comment.isLiked) {
       
-        comment.likes--;
-        comment.isLiked = false;
-      } else {
+          comment.likes--;
+          comment.isLiked = false;
+        } else {
 
-        comment.likes++;
-        comment.isLiked = true;
+          comment.likes++;
+          comment.isLiked = true;
       }
       renderComments (); 
     }
@@ -119,18 +134,18 @@
         return;
       }
 
-    const now = new Date();
-    const date = 
-    now.getDate().toString().padStart(2, '0') + '.' + 
-    (now.getMonth() + 1).toString().padStart(2, '0') + '.' + 
-    now.getFullYear().toString().slice(-2) + ' ' + 
-    now.getHours().toString().padStart(2, '0') + ':' + 
-    now.getMinutes().toString().padStart(2, '0');
+      const now = new Date();
+      const date = 
+        now.getDate().toString().padStart(2, '0') + '.' + 
+        (now.getMonth() + 1).toString().padStart(2, '0') + '.' + 
+        now.getFullYear().toString().slice(-2) + ' ' + 
+        now.getHours().toString().padStart(2, '0') + ':' + 
+        now.getMinutes().toString().padStart(2, '0');
 
-    comments.push({
-        name: formName.value,
+      comments.push({
+        name: formName.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
         date: date,
-        text: formText.value,
+        text: formText.value.replaceAll("<","&lt;").replaceAll(">","&gt;"),
         likes: 0,
         isLiked: false
       });
@@ -138,8 +153,8 @@
     renderComments ();
 
   
-    formName.value = ""; //обнуляем строку вода
-    formText.value = "";
+      formName.value = ""; //обнуляем строку вода
+      formText.value = "";
 
     });
     renderComments ();
