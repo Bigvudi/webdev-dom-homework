@@ -20,5 +20,8 @@
   "homepage": "https://github.com/Bigvudi/webdev-dom-homework#readme",
   "dependencies": {
     "data-fns": "^1.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1"
   }
 }
