@@ -1,5 +1,5 @@
 import { comments } from './comments.js';
-import { initEventListeners } from './initListeners.js';
+import { initLikeListeners, initQuoteListeners } from './initListeners.js'; 
 import { containerComments } from './elementSearch.js';
 
 export function renderComments() {
@@ -27,5 +27,6 @@ export function renderComments() {
         .join(''); /*склеиваем массив в строку */
 
     containerComments.innerHTML = commentsHTML; /*добавляем массив HTML */
-    initEventListeners();
+    initLikeListeners(); 
+    initQuoteListeners();
 }
