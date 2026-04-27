@@ -1,47 +1,38 @@
 import { formName, formText, formButton } from './elementSearch.js';
 import { renderComments } from './renderComments.js';
-import { comments } from './comments.js';
+import { updateComments } from './comments.js';
 import { clearText } from './clearText.js';
 
-// Оборачиваем всё в одну функцию
 export function initAddCommentListener() {
     formButton.addEventListener('click', () => {
         formName.classList.remove('error');
         formText.classList.remove('error');
 
-        if (!formName.value.trim()) {
+        if (!formName.value.trim() || !formText.value.trim()) {
             formName.classList.add('error');
-            return;
-        }
-
-        if (!formText.value.trim()) {
             formText.classList.add('error');
             return;
         }
 
-        const now = new Date();
-        const date =
-            now.getDate().toString().padStart(2, '0') +
-            '.' +
-            (now.getMonth() + 1).toString().padStart(2, '0') +
-            '.' +
-            now.getFullYear().toString().slice(-2) +
-            ' ' +
-            now.getHours().toString().padStart(2, '0') +
-            ':' +
-            now.getMinutes().toString().padStart(2, '0');
-
-        comments.push({
-            name: clearText(formName.value),
-            date: date,
-            text: clearText(formText.value),
-            likes: 0,
-            isLiked: false,
-        });
-
-        renderComments();
-
-        formName.value = '';
-        formText.value = '';
+        fetch('https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: clearText(formName.value),
+                text: clearText(formText.value),
+            }),
+        })
+            .then(() => {
+                // Просто загружаем свежий список комментариев
+                return fetch(
+                    'https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments',
+                );
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                updateComments(data.comments);
+                renderComments();
+                formName.value = '';
+                formText.value = '';
+            });
     });
 }
