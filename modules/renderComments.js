@@ -1,5 +1,5 @@
 import { comments } from './comments.js';
-import { initLikeListeners, initQuoteListeners } from './initListeners.js'; 
+import { initLikeListeners, initQuoteListeners } from './initListeners.js';
 import { containerComments } from './elementSearch.js';
 
 export function renderComments() {
@@ -10,8 +10,8 @@ export function renderComments() {
                 : 'like-button';
             return `<li class="comment">
           <div class="comment-header">
-            <div>${comment.name}</div>
-            <div>${comment.date}</div>
+            <div>${comment.author.name}</div>
+            <div>${new Date(comment.date).toLocaleString()}</div>
           </div>
           <div class="comment-body">
             <div class="comment-text">${comment.text}</div>
@@ -27,6 +27,6 @@ export function renderComments() {
         .join(''); /*склеиваем массив в строку */
 
     containerComments.innerHTML = commentsHTML; /*добавляем массив HTML */
-    initLikeListeners(); 
+    initLikeListeners();
     initQuoteListeners();
 }
