@@ -1,7 +1,6 @@
 import { formName, formText, formButton } from './elementSearch.js';
-import { renderComments } from './renderComments.js';
-import { updateComments } from './comments.js';
 import { clearText } from './clearText.js';
+import { feachAndRenderComments } from './feachAndRenderComments.js';
 
 export function initAddCommentListener() {
     formButton.addEventListener('click', () => {
@@ -25,18 +24,12 @@ export function initAddCommentListener() {
             }),
         })
             .then(() => {
-                // Просто загружаем свежий список комментариев
-                return fetch(
-                    'https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments',
-                );
+                return feachAndRenderComments();
             })
-            .then((response) => response.json())
-            .then((data) => {
+            .then(() => {
                 formButton.disabled = false;
                 formButton.textContent = 'Написать';
 
-                updateComments(data.comments);
-                renderComments();
                 formName.value = '';
                 formText.value = '';
             });
