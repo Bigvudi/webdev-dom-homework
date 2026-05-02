@@ -14,6 +14,9 @@ export function initAddCommentListener() {
             return;
         }
 
+        formButton.disabled = true;
+        formButton.textContent = 'Комментарий добавляется...';
+
         fetch('https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments', {
             method: 'POST',
             body: JSON.stringify({
@@ -29,6 +32,9 @@ export function initAddCommentListener() {
             })
             .then((response) => response.json())
             .then((data) => {
+                formButton.disabled = false;
+                formButton.textContent = 'Написать';
+
                 updateComments(data.comments);
                 renderComments();
                 formName.value = '';
