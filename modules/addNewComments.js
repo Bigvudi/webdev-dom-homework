@@ -23,15 +23,36 @@ export function initAddCommentListener() {
                 text: clearText(formText.value),
             }),
         })
+            .then((response) => {
+                // Проверяем статус ответа
+                if (response.status === 400) {
+                    throw new Error(
+                        'Имя и комментарий должны быть не короче 3 символов',
+                    );
+                }
+                if (response.status === 500) {
+                    throw new Error('Сервер сломался, попробуй позже');
+                }
+                if (!response.ok) {
+                    throw new Error('Что-то пошло не так');
+                }
+                return response.json();
+            })
             .then(() => {
                 return feachAndRenderComments();
             })
             .then(() => {
                 formButton.disabled = false;
                 formButton.textContent = 'Написать';
-
                 formName.value = '';
                 formText.value = '';
+            })
+            .catch((error) => {
+                formButton.disabled = false;
+                formButton.textContent = 'Написать';
+
+                alert(error.message);
+                console.warn(error);
             });
     });
 }
