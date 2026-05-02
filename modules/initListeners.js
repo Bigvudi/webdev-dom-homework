@@ -18,7 +18,8 @@ export function initQuoteListeners() {
     const commentElements = document.querySelectorAll('.comment');
     for (const commentElement of commentElements) {
         commentElement.addEventListener('click', () => {
-            const index = commentElement.querySelector('.like-button').dataset.index;
+            const index =
+                commentElement.querySelector('.like-button').dataset.index;
             const comment = comments[index];
 
             formText.value = `> ${comment.text}\n\n${comment.name}, `;
