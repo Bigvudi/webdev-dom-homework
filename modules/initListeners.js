@@ -23,7 +23,7 @@ export function initQuoteListeners() {
             const comment = comments[index];
 
             // Исправляем обращение к имени автора:
-            formText.value = `> ${comment.text}\n\n${comment.author.name}, `;
+            formText.value = `${comment.author.name},\n> ${comment.text}\n\n`;
             formText.focus();
         });
     }
