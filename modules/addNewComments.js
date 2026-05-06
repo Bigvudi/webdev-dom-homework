@@ -42,23 +42,16 @@ export function initAddCommentListener() {
                 return featchAndRenderComments();
             })
             .then(() => {
-                // Успех: только тут чистим форму и разблокируем кнопку
-                formButton.disabled = false;
-                formButton.textContent = 'Написать';
+                // Чистим поля ввода только при успехе
                 formName.value = '';
                 formText.value = '';
             })
             .catch((error) => {
-                // Если сервер выдал 500 — мгновенно повторяем запрос
                 if (error.message === 'Сервер сломался, попробуй позже') {
                     console.warn('Ошибка 500. Повторяю запрос...');
                     handlePostClick();
-                    return; // Кнопка остается disabled, alert не показываем
+                    return; // Прерываем цепочку, чтобы finally не сработал сейчас
                 }
-
-                // В случае других ошибок (400 или интернет) разблокируем интерфейс
-                formButton.disabled = false;
-                formButton.textContent = 'Написать';
 
                 if (error.message === 'Failed to fetch') {
                     alert(
@@ -68,6 +61,12 @@ export function initAddCommentListener() {
                     alert(error.message);
                 }
                 console.warn(error);
+            })
+            .finally(() => {
+                // Код разблокировки кнопки теперь только здесь.
+                // Выполнится всегда, кроме случая с return выше.
+                formButton.disabled = false;
+                formButton.textContent = 'Написать';
             });
     };
 
