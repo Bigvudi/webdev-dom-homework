@@ -1,6 +1,6 @@
 import { initAddCommentListener } from './modules/addNewComments.js';
-import { feachAndRenderComments } from './modules/feachAndRenderComments.js';
+import { featchAndRenderComments } from './modules/featchAndRenderComments.js';
 
-feachAndRenderComments();
+featchAndRenderComments();
 
 initAddCommentListener();
