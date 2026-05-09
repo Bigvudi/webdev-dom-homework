@@ -1,32 +1,33 @@
 import { renderComments } from './renderComments.js';
 import { updateComments } from './comments.js';
-import { loader } from './elementSearch.js';
+import { getComments } from './api.js';
 
 export const featchAndRenderComments = () => {
-    return fetch('https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments')
-        .then((response) => {
-            // Добавляем проверку на 500, чтобы работал автоповтор
-            if (response.status === 500) {
-                throw new Error('Сервер сломался, попробуй позже');
-            }
-            return response.json();
-        })
+    // Ищем лоадер прямо здесь. Если его нет в HTML — будет null
+    const loaderElement = document.getElementById('loader');
+
+    return getComments()
         .then((data) => {
             console.log(data);
-            loader.style.display = 'none';
+
+            // Проверяем существование перед тем как менять style
+            if (loaderElement) {
+                loaderElement.style.display = 'none';
+            }
+
             updateComments(data.comments);
             renderComments();
         })
         .catch((error) => {
-            // Если сервер "упал" при загрузке списка — повторяем запрос (рекурсия)
             if (error.message === 'Сервер сломался, попробуй позже') {
                 console.warn('Ошибка 500 на GET. Повторяю получение списка...');
                 return featchAndRenderComments();
             }
-            // Ловим отсутствие интернета
+
             if (error.message === 'Failed to fetch') {
                 alert('Кажется, у вас сломался интернет, попробуйте позже.');
             }
+
             console.error(error);
         });
 };

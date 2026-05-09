@@ -1,6 +1,6 @@
-import { initAddCommentListener } from './modules/addNewComments.js';
-import { featchAndRenderComments } from './modules/featchAndRenderComments.js';
+// import { featchAndRenderComments } from './modules/featchAndRenderComments.js';
 
-featchAndRenderComments();
+import { renderLogin } from './modules/renderLogin.js';
 
-initAddCommentListener();
+// featchAndRenderComments();
+renderLogin();

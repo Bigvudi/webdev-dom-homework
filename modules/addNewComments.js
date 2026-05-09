@@ -1,8 +1,16 @@
-import { formName, formText, formButton } from './elementSearch.js';
 import { clearText } from './clearText.js';
 import { featchAndRenderComments } from './featchAndRenderComments.js';
+import { postComments } from './api.js';
 
 export function initAddCommentListener() {
+    // 1. Ищем элементы ЗДЕСЬ, а не берем старые из импорта
+    const formName = document.querySelector('.add-form-name');
+    const formText = document.querySelector('.add-form-text');
+    const formButton = document.querySelector('.add-form-button');
+
+    // Проверка на случай, если формы нет (например, на странице входа)
+    if (!formButton) return;
+
     const handlePostClick = () => {
         formName.classList.remove('error');
         formText.classList.remove('error');
@@ -16,59 +24,39 @@ export function initAddCommentListener() {
         formButton.disabled = true;
         formButton.textContent = 'Комментарий добавляется...';
 
-        fetch('https://wedev-api.sky.pro/api/v1/tyryshkin-sergei2/comments', {
-            method: 'POST',
-            body: JSON.stringify({
-                name: clearText(formName.value),
-                text: clearText(formText.value),
-                forceError: true, // Для проверки 500-й ошибки
-            }),
+        postComments({
+            name: clearText(formName.value),
+            text: clearText(formText.value),
         })
-            .then((response) => {
-                if (response.status === 400) {
-                    throw new Error(
-                        'Имя и комментарий должны быть не короче 3 символов',
-                    );
-                }
-                if (response.status === 500) {
-                    throw new Error('Сервер сломался, попробуй позже');
-                }
-                if (!response.ok) {
-                    throw new Error('Что-то пошло не так');
-                }
-                return response.json();
-            })
             .then(() => {
                 return featchAndRenderComments();
             })
             .then(() => {
-                // Чистим поля ввода только при успехе
                 formName.value = '';
                 formText.value = '';
             })
             .catch((error) => {
                 if (error.message === 'Сервер сломался, попробуй позже') {
-                    console.warn('Ошибка 500. Повторяю запрос...');
                     handlePostClick();
-                    return; // Прерываем цепочку, чтобы finally не сработал сейчас
+                    return;
                 }
-
-                if (error.message === 'Failed to fetch') {
-                    alert(
-                        'Кажется, у вас сломался интернет, попробуйте позже.',
-                    );
-                } else {
-                    alert(error.message);
-                }
-                console.warn(error);
+                alert(
+                    error.message === 'Failed to fetch'
+                        ? 'Нет интернета'
+                        : error.message,
+                );
             })
             .finally(() => {
-                // Код разблокировки кнопки теперь только здесь.
-                // Выполнится всегда, кроме случая с return выше.
-                formButton.disabled = false;
-                formButton.textContent = 'Написать';
+                // Важно: проверяем, существует ли еще кнопка (мог случиться рендер)
+                if (formButton) {
+                    formButton.disabled = false;
+                    formButton.textContent = 'Написать';
+                }
             });
     };
 
+    // Чтобы не вешать по 10 обработчиков на одну кнопку,
+    // сначала удаляем старый (если он был), затем добавляем новый
+    formButton.removeEventListener('click', handlePostClick);
     formButton.addEventListener('click', handlePostClick);
 }
