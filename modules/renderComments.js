@@ -63,8 +63,5 @@ export function renderComments() {
     // После того как HTML отрисован, "оживляем" кнопки
     initLikeListeners();
     initQuoteListeners();
-    // Если функция для кнопки "Написать" вынесена, вызываем и её
-    if (typeof initAddCommentListener === 'function') {
-        initAddCommentListener();
-    }
+    initAddCommentListener();
 }

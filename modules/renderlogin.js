@@ -1,5 +1,6 @@
 import { login, updateToken } from './api.js';
 import { featchAndRenderComments } from './featchAndRenderComments.js';
+import { renderRegistration } from './renderRegidtration.js';
 export const renderLogin = () => {
     const app = document.getElementById('app');
     app.innerHTML = `
@@ -26,5 +27,10 @@ export const renderLogin = () => {
             updateToken(responseData.user.token);
             featchAndRenderComments();
         });
+    });
+    const buttonReg = document.getElementById('reg-button');
+
+    buttonReg.addEventListener('click', () => {
+        renderRegistration();
     });
 };

@@ -1,3 +1,7 @@
+import { registration } from './api.js';
+import { updateToken } from './api.js';
+import { featchAndRenderComments } from './featchAndRenderComments.js';
+
 export const renderRegistration = () => {
     const app = document.getElementById('app');
     app.innerHTML = `
@@ -12,4 +16,19 @@ export const renderRegistration = () => {
     <br />
     <button class="button" id="login-button">Зарегестрироваться</button>
 </div>`;
+
+    const button = document.getElementById('login-button');
+    const loginElement = document.getElementById('login-input');
+    const passwordElement = document.getElementById('password-input');
+    const nameElement = document.getElementById('name-input');
+    button.addEventListener('click', () => {
+        registration({
+            name: nameElement.value,
+            login: loginElement.value,
+            password: passwordElement.value,
+        }).then((responseData) => {
+            updateToken(responseData.user.token);
+            featchAndRenderComments();
+        });
+    });
 };
