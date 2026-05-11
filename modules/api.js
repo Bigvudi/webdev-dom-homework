@@ -1,8 +1,13 @@
 const host = 'https://wedev-api.sky.pro/api/v2/tyryshkin-sergei2/comments';
-let token = '';
+export let token = '';
+export let user = '';
 
 export const updateToken = (newToken) => {
     token = newToken;
+};
+
+export const updateUser = (newUser) => {
+    user = newUser;
 };
 
 const authToken = 'https://wedev-api.sky.pro/api/user';
