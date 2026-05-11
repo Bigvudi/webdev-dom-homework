@@ -55,7 +55,6 @@ export function initAddCommentListener() {
             });
     };
 
-    // Чтобы не вешать по 10 обработчиков на одну кнопку,
     // сначала удаляем старый (если он был), затем добавляем новый
     formButton.removeEventListener('click', handlePostClick);
     formButton.addEventListener('click', handlePostClick);

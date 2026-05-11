@@ -49,7 +49,7 @@ export function postComments({ text }) {
             Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-            text, // API v2 часто требует только text, так как имя берется из профиля юзера
+            text,
         }),
     }).then(handleResponse);
 }

@@ -1,11 +1,10 @@
 import { registration, updateToken, updateUser } from './api.js';
 import { featchAndRenderComments } from './featchAndRenderComments.js';
-import { renderLogin } from './renderLogin.js'; // Не забудьте импорт для перехода
+import { renderLogin } from './renderLogin.js';
 
 export const renderRegistration = () => {
     const app = document.getElementById('app');
 
-    // Если контейнер делает фон черным, проверьте CSS класс .container
     app.innerHTML = `
     <div class="container">
         <h1>Страница регистрации</h1>
