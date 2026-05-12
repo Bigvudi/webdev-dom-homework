@@ -18,19 +18,23 @@ const handleResponse = (response) => {
         return response.json();
     }
 
-    if (response.status === 400) {
-        throw new Error('Имя и комментарий должны быть не короче 3 символов');
-    }
+    // Вместо мгновенного throw, сначала читаем JSON от сервера
+    return response.json().then((errorData) => {
+        if (response.status === 400) {
+            // errorData.error — это то самое сообщение от сервера (например, "Такой логин уже есть")
+            throw new Error(errorData.error);
+        }
 
-    if (response.status === 500) {
-        throw new Error('Сервер сломался, попробуй позже');
-    }
+        if (response.status === 500) {
+            throw new Error('Сервер сломался, попробуй позже');
+        }
 
-    if (response.status === 401) {
-        throw new Error('Вы не авторизованы');
-    }
+        if (response.status === 401) {
+            throw new Error('Вы не авторизованы');
+        }
 
-    throw new Error('Что-то пошло не так');
+        throw new Error('Что-то пошло не так');
+    });
 };
 
 export function getComments() {

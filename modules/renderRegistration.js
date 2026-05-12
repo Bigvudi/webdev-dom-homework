@@ -57,15 +57,9 @@ export const renderRegistration = () => {
             })
             .catch((error) => {
                 button.disabled = false;
-                button.textContent = 'Зарегестрироваться';
+                button.textContent = 'Зарегистрироваться';
+                alert(error.message);
 
-                if (error.message === 'User with this login already exists') {
-                    alert('Такой логин уже занят');
-                } else if (error.message === 'Bad Request') {
-                    alert('Логин и пароль должны быть не короче 3 символов');
-                } else {
-                    alert('Что-то пошло не так, попробуйте позже');
-                }
                 console.warn(error);
             });
     });
